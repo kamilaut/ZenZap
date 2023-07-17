@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
     fontSize: 45,
     fontWeight: '600',
     color: '#FFFFFF',
-    marginTop: '10%',
+    marginTop: 120,
   },
   contentContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.88)',
@@ -82,7 +82,10 @@ const styles = StyleSheet.create({
     paddingVertical: '6%',
     width: '88%',
     marginTop: '10%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    minHeight: "44%",
+    margin: 50,
+    justifyContent: 'space-between'
   },
   nameContainer: {
     backgroundColor: '#FFFFFF',
@@ -90,11 +93,15 @@ const styles = StyleSheet.create({
     marginBottom: '6%',
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 2,
+    borderColor: 'grey',
+    borderWidth: 2
   },
   icon: {
     width: 24,
     height: 24,
-    marginRight: 10,
+    marginRight: 12,
+    marginLeft: 6,
   },
   input: {
     flex: 1,
@@ -105,11 +112,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '300',
     color: '#757083',
+    marginTop: 40
+    
   },
   colorOptionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     marginBottom: '6%',
+    width: '90%',
+    paddingVertical: 5
   },
   colorOption: {
     width: 50,
@@ -118,8 +129,11 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#757083',
-    paddingVertical: 10,
+    paddingVertical: 20,
     paddingHorizontal: 20,
+    alignSelf: "stretch",
+    button: '75',
+    justifyContent: 'center'
   },
   buttonText: {
     fontSize: 16,
