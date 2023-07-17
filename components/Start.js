@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, TextInput } from 'react-native';
 
 export default function Start({ navigation }) {
   const [userName, setUserName] = useState('');
+  const [selectedColor, setSelectedColor] = useState('#090C08'); // Add selectedColor state
 
   const handleStartChatting = () => {
     navigation.navigate('Chat', {
@@ -17,13 +18,18 @@ export default function Start({ navigation }) {
 
   return (
     <ImageBackground source={require('../assets/bg.png')} style={styles.backgroundImage}>
-
       <View style={styles.container}>
         <Text style={styles.title}>ZenZap</Text>
         <View style={styles.contentContainer}>
           <View style={styles.nameContainer}>
             <Image source={require('../assets/icon.png')} style={styles.icon} />
-            <Text style={styles.subtitle}>Your Name</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setUserName}
+              value={userName}
+              placeholder="Your Name"
+              placeholderTextColor="#757083"
+            />
           </View>
           <Text style={styles.subtitle}>Choose background color</Text>
           <View style={styles.colorOptionsContainer}>
@@ -90,6 +96,11 @@ const styles = StyleSheet.create({
     height: 24,
     marginRight: 10,
   },
+  input: {
+    flex: 1,
+    height: 40,
+    color: '#757083',
+  },
   subtitle: {
     fontSize: 16,
     fontWeight: '300',
@@ -117,3 +128,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
