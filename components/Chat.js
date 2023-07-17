@@ -7,6 +7,7 @@ export default function Chat({ route }) {
   return (
     <View style={[styles.container, { backgroundColor }]}>
       <Text style={styles.userName}>{userName}</Text>
+      <Text style={styles.chatText}>Welcome to the chat screen!</Text>
     </View>
   );
 }
@@ -14,12 +15,20 @@ export default function Chat({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
   },
   userName: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 16,
+  },
+  chatText: {
+    fontSize: 16,
+    fontWeight: '300',
     color: '#FFFFFF',
   },
 });
+
