@@ -1,56 +1,90 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { TouchableOpacity } from 'react-native';
 
 export default function Chat({ route }) {
   const { userName, backgroundColor } = route.params;
 
-  // Seting up state to manage messages
+  // State to manage messages
   const [messages, setMessages] = useState([]);
 
-  // Adding two static messages (system message and user message) using useEffect
+  // Function to handle sending new messages
+  const onSend = (newMessages) => {
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
+  };
+
+  // useEffect to add initial static messages (system message and user message)
   useEffect(() => {
-    // System message to indicate the user has entered the chat
-    const systemMessage = {
-      _id: 1,
-      text: 'Welcome to the chat!',
-      createdAt: new Date(),
-      system: true,
-    };
-
-    // User message (you can customize this)
-    const userMessage = {
-      _id: 2,
-      text: 'Hello, how are you?',
-      createdAt: new Date(),
-      user: {
-        _id: 3,
-        name: 'User',
+    setMessages([
+      {
+        _id: 1,
+        text: 'You think you ate?',
+        createdAt: new Date(),
+        system: true,
       },
-    };
-
-    // Combining the static messages and set them to the state
-    setMessages([systemMessage, userMessage]);
+      {
+        _id: 2,
+        text: 'Today is a perfect day to remember all the exes who are living much happier lives without you',
+        createdAt: new Date(),
+        user: {
+          _id: 3,
+          name: 'User',
+        },
+      },
+    ]);
   }, []);
 
-  // Implementing the GiftedChat component to display messages
-  return (
-    //Adding KeyboardAvoidingView for Android and iOS
-    <KeyboardAvoidingView
-      style={[styles.container, { backgroundColor }]}
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Adjust as needed
-    >
-      <Text style={styles.userName}>{userName}</Text>
-      <GiftedChat
-        messages={messages}
-        onSend={(newMessages) => setMessages((prevMessages) => GiftedChat.append(prevMessages, newMessages))}
-        user={{
-          _id: 3, // You can use any unique ID here to identify the user
-          name: userName,
+  // Function to customize the appearance of message bubbles
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#000',
+          },
+          left: {
+            backgroundColor: '#FFF',
+          },
         }}
       />
-    </KeyboardAvoidingView>
+    );
+  };
+
+  // Function to handle actions when "More Options" button is pressed
+  const onPress = () => {
+    // You can add more actions here if needed
+    console.log('More options pressed');
+  };
+
+  return (
+    <View style={[styles.container, { backgroundColor }]}>
+      <Text style={styles.userName}>{userName}</Text>
+      {/* GiftedChat component to display messages */}
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1, // You can use any unique ID here to identify the user
+          name: userName,
+        }}
+        renderBubble={renderBubble}
+      />
+      {/* KeyboardAvoidingView for Android to adjust keyboard */}
+      {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+      {/* "More Options" button */}
+      <TouchableOpacity
+        accessible={true}
+        accessibilityLabel="More options"
+        accessibilityHint="Let’s you choose to send an image or your geolocation."
+        accessibilityRole="button"
+        onPress={onPress}
+        style={styles.button}
+      >
+        <Text>More Options</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -66,5 +100,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    alignItems: 'center',
+    borderRadius: 5,
   },
 });
