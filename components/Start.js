@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 
 export default function Start({ navigation }) {
   const [userName, setUserName] = useState('');
@@ -18,7 +18,6 @@ export default function Start({ navigation }) {
 
   return (
     <ImageBackground source={require('../assets/bg.png')} style={styles.backgroundImage}>
-      <View style={styles.container}>
         <Text style={styles.title}>ZenZap</Text>
         <View style={styles.contentContainer}>
           <View style={styles.nameContainer}>
@@ -51,10 +50,10 @@ export default function Start({ navigation }) {
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleStartChatting}>
-            <Text style={styles.buttonText}>Start Chatting</Text>
+            <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
         </View>
-      </View>
+        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
     </ImageBackground>
   );
 }
