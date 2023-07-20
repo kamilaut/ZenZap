@@ -74,14 +74,7 @@ export default function Chat({ route }) {
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
       {/* "More Options" button */}
-      <TouchableOpacity
-        accessible={true}
-        accessibilityLabel="More options"
-        accessibilityHint="Let’s you choose to send an image or your geolocation."
-        accessibilityRole="button"
-        onPress={onPress}
-        style={styles.button}
-      >
+      <TouchableOpacity>
         <Text>More Options</Text>
       </TouchableOpacity>
     </View>
