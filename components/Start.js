@@ -53,7 +53,8 @@ export default function Start({ navigation }) {
             <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
         </View>
-        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
+        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="height" /> : null}
+
     </ImageBackground>
   );
 }
@@ -141,4 +142,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-

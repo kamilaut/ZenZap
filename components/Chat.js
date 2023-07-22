@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import { TouchableOpacity } from 'react-native';
 
 export default function Chat({ route }) {
   const { userName, backgroundColor } = route.params;
@@ -72,7 +71,8 @@ export default function Chat({ route }) {
         renderBubble={renderBubble}
       />
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
-      {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+      {Platform.OS === 'amdroid' ? <KeyboardAvoidingView behavior="padding" /> : null}
+
       {/* "More Options" button */}
       <TouchableOpacity>
         <Text>More Options</Text>
