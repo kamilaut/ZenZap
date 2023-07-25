@@ -71,7 +71,7 @@ export default function Chat({ route }) {
         renderBubble={renderBubble}
       />
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
-      {Platform.OS === 'amdroid' ? <KeyboardAvoidingView behavior="padding" /> : null}
+      {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="padding" /> : null}
 
       {/* "More Options" button */}
       <TouchableOpacity>
