@@ -10,7 +10,11 @@ const Start = ({ navigation }) => {
   const signInUser = () => {
     signInAnonymously(auth)
       .then(result => {
-        navigation.navigate("Chat", {userID: result.user.uid });
+        navigation.navigate("Chat", {
+          userID: result.user.uid,
+          userName: userName,
+          backgroundColor: selectedColor
+         });
         Alert.alert("Signed in Successfully!");
       })
       .catch((error) => {
@@ -60,7 +64,7 @@ const Start = ({ navigation }) => {
             <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
         </View>
-        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="height" /> : null}
+        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
 
     </ImageBackground>
   );
@@ -70,7 +74,8 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: "center"
   },
   container: {
     flex: 1,
