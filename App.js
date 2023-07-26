@@ -45,9 +45,9 @@ return (
           headerTintColor: '#FFFFFF',
           headerTitleStyle: { fontWeight: 'bold' },
         })}
-        initialParams={{ db }} // Pass the db prop as an initial parameter
-        component={Chat} // Set the component to Chat directly within the Stack.Screen
-      />
+        >
+        {props => <Chat db={db} {...props} />}
+        </Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
 );

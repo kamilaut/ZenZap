@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore"; // Update imports
 
-export default function Chat({ route }) {
+export default function Chat({ route, db, navigation }) {
   const { userName, backgroundColor } = route.params;
 
   // State to manage messages
@@ -13,26 +14,25 @@ export default function Chat({ route }) {
     setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
   };
 
-  // useEffect to add initial static messages (system message and user message)
+  // useEffect to fetch messages from the database in real-time
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'You think you ate?',
-        createdAt: new Date(),
-        system: true,
-      },
-      {
-        _id: 2,
-        text: 'Today is a perfect day to remember all the exes who are living much happier lives without you',
-        createdAt: new Date(),
-        user: {
-          _id: 3,
-          name: 'User',
-        },
-      },
-    ]);
-  }, []);
+    navigation.setOptions({ title: userName }); 
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const unsubMessages = onSnapshot(q, (docs) => {
+      let newMessages = [];
+      docs.forEach(doc => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date(doc.data().createdAt.toMillis())
+        })
+      })
+      setMessages(newMessages);
+    })
+    return () => {
+      if (unsubMessages) unsubMessages();
+    }
+  }, [db, userName]);
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
@@ -53,7 +53,6 @@ export default function Chat({ route }) {
 
   // Function to handle actions when "More Options" button is pressed
   const onPress = () => {
-    // You can add more actions here if needed
     console.log('More options pressed');
   };
 
@@ -65,7 +64,7 @@ export default function Chat({ route }) {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1, // You can use any unique ID here to identify the user
+          _id: 1,
           name: userName,
         }}
         renderBubble={renderBubble}
