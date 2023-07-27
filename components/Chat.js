@@ -10,25 +10,10 @@ export default function Chat({ route, db, navigation }) {
   const [messages, setMessages] = useState([]);
 
   // Function to handle sending new messages
-  const onSend = async(newMessages) => {
-   try {
-    // saving sent msgs to the firestore
-    await addDoc (collection(db, "messages"), {
-      text: newMessages[0].text,
-      createdAt: newMessages[0].createdAt,
-      user: {
-        _id: userID,
-        name: userName,
-      },
-    })
-    
-    //updating messages state 
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
-  } catch (error) {
-    console.error("Error sending message:", error);
+  const onSend = (newMessages) => {
+    addDoc(collection(db, "messages"), newMessages[0])
   }
-};
-
+  
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
     navigation.setOptions({ title: userName }); 
