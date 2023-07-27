@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import { collection, query, orderBy, onSnapshot } from "firebase/firestore"; // Update imports
+import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firestore"; 
 
 export default function Chat({ route, db, navigation }) {
-  const { userName, backgroundColor } = route.params;
+  const { userName, backgroundColor, userID } = route.params;
 
   // State to manage messages
   const [messages, setMessages] = useState([]);
 
   // Function to handle sending new messages
-  const onSend = (newMessages) => {
+  const onSend = async(newMessages) => {
+   try {
+    // saving sent msgs to the firestore
+    await addDoc (collection(db, "messages"), {
+      text: newMessages[0].text,
+      createdAt: newMessages[0].createdAt,
+      user: {
+        _id: userID,
+        name: userName,
+      },
+    })
+    
+    //updating messages state 
     setMessages((previousMessages) => GiftedChat.append(previousMessages, newMessages));
-  };
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
+};
 
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
@@ -32,7 +47,7 @@ export default function Chat({ route, db, navigation }) {
     return () => {
       if (unsubMessages) unsubMessages();
     }
-  }, [db, userName]);
+  }, [ userName ]);
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
@@ -64,7 +79,7 @@ export default function Chat({ route, db, navigation }) {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userID,
           name: userName,
         }}
         renderBubble={renderBubble}
