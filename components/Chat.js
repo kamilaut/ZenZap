@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NerInfo from '@react-native-community/netinfo'
 
 
-const Chat = ({ isConnected, route, db, navigation }) {
+const Chat = ({ isConnected, route, db, navigation }) => {
   const { userName, backgroundColor, userID } = route.params;
   // State to manage messages
   const [messages, setMessages] = useState([]);
@@ -24,22 +24,29 @@ const Chat = ({ isConnected, route, db, navigation }) {
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
     navigation.setOptions({ title: userName }); 
-    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
-    const unsubMessages = onSnapshot(q, (docs) => {
-      let newMessages = [];
-      docs.forEach(doc => {
-        newMessages.push({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: new Date(doc.data().createdAt.toMillis())
+    let unsubMessages;
+    
+    if (isConnected) {
+      const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      unsubMessages = onSnapshot(q, (docs) => {
+        let newMessages = [];
+        docs.forEach(doc => {
+          newMessages.push({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: new Date(doc.data().createdAt.toMillis())
+          })
         })
-      })
-      setMessages(newMessages);
-    })
+        setMessages(newMessages);
+      });
+    } else {
+      loadCachedLists();
+    }
+
     return () => {
       if (unsubMessages) unsubMessages();
     }
-  }, [ userName ]);
+  }, [ userName, isConnected ]);
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
