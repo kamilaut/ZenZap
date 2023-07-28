@@ -48,7 +48,7 @@ const Chat = ({ isConnected, route, db, navigation }) => {
       });
       
     } else {
-      loadCachedMessages()
+      cacheMessages(messages)
       .then((cachedMessages) => {
         setMessages(cachedMessages);
       })
@@ -61,6 +61,12 @@ const Chat = ({ isConnected, route, db, navigation }) => {
       if (unsubMessages) unsubMessages();
     };
   }, [ userName, isConnected, userID ]);
+  
+  const renderInputToolbar = (props) => {
+    if (isConnected) return <InputToolbar {...props} />;
+    else 
+    return null;
+   }
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
@@ -96,6 +102,7 @@ const Chat = ({ isConnected, route, db, navigation }) => {
           name: userName,
         }}
         renderBubble={renderBubble}
+        renderInputToolbar={renderInputToolbar}
       />
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
