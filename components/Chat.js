@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firestore"; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import NerInfo from '@react-native-community/netinfo'
 
-export default function Chat({ route, db, navigation }) {
+
+const Chat = ({ isConnected, route, db, navigation }) {
   const { userName, backgroundColor, userID } = route.params;
-
   // State to manage messages
   const [messages, setMessages] = useState([]);
 
   // Function to handle sending new messages
   const onSend = (newMessages) => {
     addDoc(collection(db, "messages"), newMessages[0])
+  }
+  
+  const loadCachedLists = async () => {
+    const cachedLists = await AsyncStorage.getItem("chat") || [];
+    setLists(JSON.parse(cachedLists));
   }
   
   // useEffect to fetch messages from the database in real-time
