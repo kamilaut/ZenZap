@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacit
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firestore"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import NerInfo from '@react-native-community/netinfo'
-
 
 const Chat = ({ isConnected, route, db, navigation }) => {
   const { userName, backgroundColor, userID } = route.params;
@@ -15,11 +13,15 @@ const Chat = ({ isConnected, route, db, navigation }) => {
   const onSend = (newMessages) => {
     addDoc(collection(db, "messages"), newMessages[0])
   }
-  
-  const loadCachedLists = async () => {
-    const cachedLists = await AsyncStorage.getItem("chat") || [];
-    setLists(JSON.parse(cachedLists));
-  }
+    
+  // Function to cache messages using AsyncStorage
+  const cacheMessages = async (messages) => {
+    try {
+      await AsyncStorage.setItem("chat", JSON.stringify(messages));
+    } catch (error) {
+      console.log("Error caching messages:", error);
+    }
+  };
   
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
@@ -33,20 +35,32 @@ const Chat = ({ isConnected, route, db, navigation }) => {
         docs.forEach(doc => {
           newMessages.push({
             id: doc.id,
-            ...doc.data(),
-            createdAt: new Date(doc.data().createdAt.toMillis())
-          })
-        })
+            text: doc.data().text,
+            createdAt: new Date(doc.data().createdAt.toMillis()),
+            user: {
+              _id: doc.data().userId,
+              name: doc.data().userName,
+            },
+          });
+        });
+        cacheMessages(newMessages);
         setMessages(newMessages);
       });
+      
     } else {
-      loadCachedLists();
-    }
+      loadCachedMessages()
+      .then((cachedMessages) => {
+        setMessages(cachedMessages);
+      })
+      .catch((error) => {
+        console.log("Error loading cached messages:", error);
+      });
+  }
 
     return () => {
       if (unsubMessages) unsubMessages();
-    }
-  }, [ userName, isConnected ]);
+    };
+  }, [ userName, isConnected, userID ]);
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
@@ -114,3 +128,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 })
+
+export default Chat;

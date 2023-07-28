@@ -1,20 +1,19 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Start from './components/Start';
-import Chat from './components/Chat';
+import React, { useEffect } from "react";
+import { Alert } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Start from "./components/Start";
+import Chat from "./components/Chat";
 import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useEffect } from "react";
-import { LogBox, Alert } from "react-native";
 
 
 const Stack = createNativeStackNavigator();
-const connectionStatus = useNetInfo();
-
 
 const App = () => { 
+  const connectionStatus = useNetInfo();
+  
   const firebaseConfig = {
   apiKey: "AIzaSyB2ho8ZxntFih_WLFKCbWcLh8hXhQba9zQ",
   authDomain: "zen-zapp.firebaseapp.com",
@@ -53,16 +52,16 @@ return (
       <Stack.Screen
         name="Chat"
         options={({ route }) => ({
-          title: route.params?.userName ?? 'Chat',
+          title: route.params?.userName ?? "Chat",
           headerStyle: {
-            backgroundColor: route.params?.backgroundColor ?? '#757083',
+            backgroundColor: route.params?.backgroundColor ?? "#757083",
           },
-          headerTintColor: '#FFFFFF',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTintColor: "#FFFFFF",
+          headerTitleStyle: { fontWeight: "bold" },
         })}
-        >
-        {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
-        </Stack.Screen>
+      >
+        {(props) => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+      </Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
 );
