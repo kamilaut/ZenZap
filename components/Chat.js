@@ -63,7 +63,7 @@ const Chat = ({ isConnected, route, db, navigation }) => {
     return () => {
       if (unsubMessages) unsubMessages();
     };
-  }, [ userName, isConnected, userID ]);
+  }, [ isConnected ]);
   
   const renderInputToolbar = (props) => {
     if (isConnected) return <InputToolbar {...props} />;
