@@ -48,15 +48,21 @@ const Chat = ({ isConnected, route, db, navigation }) => {
       });
       
     } else {
-      cacheMessages(messages)
-      .then((cachedMessages) => {
-        setMessages(cachedMessages);
-      })
-      .catch((error) => {
-        console.log("Error loading cached messages:", error);
-      });
-  }
-
+      //  load messages from async storage when there's no connection 
+      const loadCachedLists = async () => {
+        try {
+          const cachedMessages = await AsyncStorage.getItem("chat");
+          if (cachedMessages !== null) {
+            setMessages(JSON.parse(cachedMessages));
+          }
+        } catch (error) {
+          console.log("Error loading cached messages:", error);
+        }
+      };
+  
+      loadCachedLists();
+    }
+  
     return () => {
       if (unsubMessages) unsubMessages();
     };
