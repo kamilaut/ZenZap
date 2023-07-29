@@ -23,6 +23,18 @@ const Chat = ({ isConnected, route, db, navigation }) => {
     }
   };
   
+       //  load messages from async storage when there's no connection 
+       const loadCachedChat = async () => {
+        try {
+          const cachedMessages = await AsyncStorage.getItem("chat");
+          if (cachedMessages !== null) {
+            setMessages(JSON.parse(cachedMessages));
+          }
+        } catch (error) {
+          console.log("Error loading cached messages:", error);
+        }
+      };
+  
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
     navigation.setOptions({ title: userName }); 
@@ -35,32 +47,17 @@ const Chat = ({ isConnected, route, db, navigation }) => {
         docs.forEach(doc => {
           newMessages.push({
             id: doc.id,
-            text: doc.data().text,
+            ...doc.data(),
             createdAt: new Date(doc.data().createdAt.toMillis()),
-            user: {
-              _id: doc.data().userId,
-              name: doc.data().userName,
-            },
           });
         });
+        
         cacheMessages(newMessages);
         setMessages(newMessages);
       });
       
     } else {
-      //  load messages from async storage when there's no connection 
-      const loadCachedLists = async () => {
-        try {
-          const cachedMessages = await AsyncStorage.getItem("chat");
-          if (cachedMessages !== null) {
-            setMessages(JSON.parse(cachedMessages));
-          }
-        } catch (error) {
-          console.log("Error loading cached messages:", error);
-        }
-      };
-  
-      loadCachedLists();
+      loadCachedChat();
     }
   
     return () => {
