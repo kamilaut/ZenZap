@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacit
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firestore"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomActions from './CustomActions';
+import MapView from 'react-native-maps';
+import { storage } from "firebase/storage";
 
 const Chat = ({ isConnected, route, db, navigation }) => {
   const { userName, backgroundColor, userID } = route.params;
@@ -70,6 +73,10 @@ const Chat = ({ isConnected, route, db, navigation }) => {
     else 
     return null;
    }
+   
+   const renderCustomActions = (props) => {
+    return <CustomActions userID={userID} storage={storage} {...props} />;
+  };
 
   // Function to customize the appearance of message bubbles
   const renderBubble = (props) => {
@@ -92,6 +99,27 @@ const Chat = ({ isConnected, route, db, navigation }) => {
   const onPress = () => {
     console.log('More options pressed');
   };
+  
+  const renderCustomView = (props) => {
+    const { currentMessage} = props;
+    if (currentMessage.location) {
+      return (
+          <MapView
+            style={{width: 150,
+              height: 100,
+              borderRadius: 13,
+              margin: 3}}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+      );
+    }
+    return null;
+  }
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
@@ -106,6 +134,8 @@ const Chat = ({ isConnected, route, db, navigation }) => {
         }}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
+        renderActions={renderCustomActions}
+        renderCustomView={renderCustomView}
       />
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
