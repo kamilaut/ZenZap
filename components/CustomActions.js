@@ -84,7 +84,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
     return (
         <TouchableOpacity style={styles.container} onPress={onActionPress}>
         <View style={[styles.wrapper, wrapperStyle]}>
-          <Text style={[styles.iconText, iconTextStyle]}>+</Text>
+          <Text style={[styles.iconText, iconTextStyle]}>Add</Text>
         </View>
       </TouchableOpacity>
     );
@@ -92,24 +92,29 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
   
   const styles = StyleSheet.create({
     container: {
-      width: 26,
-      height: 26,
-      marginLeft: 10,
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 12,
       marginBottom: 10,
     },
     wrapper: {
-      borderRadius: 13,
-      borderColor: '#b2b2b2',
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      borderColor: '#A5A5A5',
       borderWidth: 2,
-      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     iconText: {
-      color: '#b2b2b2',
-      fontWeight: 'bold',
-      fontSize: 10,
+      color: '#A5A5A5',
+      fontWeight: 'normal',
+      fontSize: 18,
       backgroundColor: 'transparent',
-      textAlign: 'center',
     },
-  });
+  });  
   
   export default CustomActions;

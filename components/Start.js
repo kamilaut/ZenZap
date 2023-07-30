@@ -1,3 +1,4 @@
+// start.js
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { getAuth, signInAnonymously } from "firebase/auth";
@@ -5,7 +6,7 @@ import { getAuth, signInAnonymously } from "firebase/auth";
 const Start = ({ navigation }) => {
   const auth = getAuth();
   const [userName, setUserName] = useState('');
-  const [selectedColor, setSelectedColor] = useState('#090C08'); // Add selectedColor state
+  const [selectedColor, setSelectedColor] = useState('#2C3E39'); // Updated with RGB value
 
   const signInUser = () => {
     signInAnonymously(auth)
@@ -28,6 +29,7 @@ const Start = ({ navigation }) => {
 
   return (
     <ImageBackground source={require('../assets/bg.png')} style={styles.backgroundImage}>
+      <View style={styles.container}>
         <Text style={styles.title}>ZenZap</Text>
         <View style={styles.contentContainer}>
           <View style={styles.nameContainer}>
@@ -43,29 +45,28 @@ const Start = ({ navigation }) => {
           <Text style={styles.subtitle}>Choose background color</Text>
           <View style={styles.colorOptionsContainer}>
             <TouchableOpacity
-              style={[styles.colorOption, { backgroundColor: '#090C08' }]}
-              onPress={() => handleColorSelection('#090C08')}
+              style={[styles.colorOption, { backgroundColor: '#7096A1' }]}
+              onPress={() => handleColorSelection('#7096A1')}
             />
             <TouchableOpacity
-              style={[styles.colorOption, { backgroundColor: '#474056' }]}
-              onPress={() => handleColorSelection('#474056')}
+              style={[styles.colorOption, { backgroundColor: '#B2C9CE' }]}
+              onPress={() => handleColorSelection('#B2C9CE')}
             />
             <TouchableOpacity
-              style={[styles.colorOption, { backgroundColor: '#8A95A5' }]}
-              onPress={() => handleColorSelection('#8A95A5')}
+              style={[styles.colorOption, { backgroundColor: '#DDD8CA' }]}
+              onPress={() => handleColorSelection('#DDD8CA')}
             />
             <TouchableOpacity
-              style={[styles.colorOption, { backgroundColor: '#B9C6AE' }]}
-              onPress={() => handleColorSelection('#B9C6AE')}
+              style={[styles.colorOption, { backgroundColor: '#E2F2DC' }]}
+              onPress={() => handleColorSelection('#E2F2DC')}
             />
           </View>
-          <TouchableOpacity style={styles.button} onPress={() => {
-    signInUser();}}>
+          <TouchableOpacity style={styles.button} onPress={() => signInUser()}>
             <Text style={styles.buttonText}>Start</Text>
           </TouchableOpacity>
         </View>
         {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
-
+      </View>
     </ImageBackground>
   );
 }
@@ -74,78 +75,65 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'space-between',
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {
-    flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    fontSize: 45,
-    fontWeight: '600',
+    fontSize: 48,
+    fontWeight: '700',
     color: '#FFFFFF',
-    marginTop: 120,
+    marginBottom: 20,
   },
   contentContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.88)',
-    paddingHorizontal: '6%',
-    paddingVertical: '6%',
-    width: '88%',
-    marginTop: '10%',
-    alignItems: 'flex-start',
-    minHeight: "44%",
-    margin: 50,
-    justifyContent: 'space-between'
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    paddingHorizontal: '10%',
+    paddingVertical: '8%',
+    width: '90%',
+    alignItems: 'center',
+    borderRadius: 12,
   },
   nameContainer: {
-    backgroundColor: '#FFFFFF',
-    padding: 10,
-    marginBottom: '6%',
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 2,
-    borderColor: 'grey',
-    borderWidth: 2
+    marginBottom: 20,
   },
   icon: {
     width: 24,
     height: 24,
     marginRight: 12,
-    marginLeft: 6,
   },
   input: {
     flex: 1,
     height: 40,
+    fontSize: 16,
     color: '#757083',
   },
   subtitle: {
     fontSize: 16,
-    fontWeight: '300',
+    fontWeight: '500',
     color: '#757083',
-    marginTop: 40
-    
+    marginBottom: 20,
   },
   colorOptionsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: '6%',
-    width: '90%',
-    paddingVertical: 5
+    justifyContent: 'space-between',
+    width: '70%',
+    marginBottom: 40,
   },
   colorOption: {
-    width: 50,
-    height: 50,
-    borderRadius: 40,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
   },
   button: {
     backgroundColor: '#757083',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    alignSelf: "stretch",
-    button: '75',
-    justifyContent: 'center'
+    paddingVertical: 16,
+    paddingHorizontal: 48,
+    borderRadius: 24,
   },
   buttonText: {
     fontSize: 16,
@@ -154,4 +142,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 export default Start;

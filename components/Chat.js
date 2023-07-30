@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firestore"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,18 +26,18 @@ const Chat = ({ isConnected, route, db, navigation }) => {
     }
   };
   
-       //  load messages from async storage when there's no connection 
-       const loadCachedChat = async () => {
-        try {
-          const cachedMessages = await AsyncStorage.getItem("chat");
-          if (cachedMessages !== null) {
-            setMessages(JSON.parse(cachedMessages));
-          }
-        } catch (error) {
-          console.log("Error loading cached messages:", error);
-        }
-      };
-  
+  // Load messages from async storage when there's no connection 
+  const loadCachedChat = async () => {
+    try {
+      const cachedMessages = await AsyncStorage.getItem("chat");
+      if (cachedMessages !== null) {
+        setMessages(JSON.parse(cachedMessages));
+      }
+    } catch (error) {
+      console.log("Error loading cached messages:", error);
+    }
+  };
+
   // useEffect to fetch messages from the database in real-time
   useEffect(() => {
     navigation.setOptions({ title: userName }); 
@@ -72,9 +72,9 @@ const Chat = ({ isConnected, route, db, navigation }) => {
     if (isConnected) return <InputToolbar {...props} />;
     else 
     return null;
-   }
-   
-   const renderCustomActions = (props) => {
+  }
+  
+  const renderCustomActions = (props) => {
     return <CustomActions userID={userID} storage={storage} {...props} />;
   };
 
@@ -85,37 +85,37 @@ const Chat = ({ isConnected, route, db, navigation }) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#000',
+            backgroundColor: '#2C3E39',
           },
           left: {
-            backgroundColor: '#FFF',
+            backgroundColor: '#B5E6A3',
+          },
+        }}
+        textStyle={{
+          right: {
+            color: '#FFFFFF',  
+          },
+          left: {
+            color: '#000000',  
           },
         }}
       />
     );
   };
 
-  // Function to handle actions when "More Options" button is pressed
-  const onPress = () => {
-    console.log('More options pressed');
-  };
-  
   const renderCustomView = (props) => {
     const { currentMessage} = props;
     if (currentMessage.location) {
       return (
-          <MapView
-            style={{width: 150,
-              height: 100,
-              borderRadius: 13,
-              margin: 3}}
-            region={{
-              latitude: currentMessage.location.latitude,
-              longitude: currentMessage.location.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
+        <MapView
+          style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+          region={{
+            latitude: currentMessage.location.latitude,
+            longitude: currentMessage.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        />
       );
     }
     return null;
@@ -139,11 +139,6 @@ const Chat = ({ isConnected, route, db, navigation }) => {
       />
       {/* KeyboardAvoidingView for Android to adjust keyboard */}
       {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
-
-      {/* "More Options" button */}
-      <TouchableOpacity>
-        <Text>More Options</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -156,10 +151,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   userName: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   button: {
     backgroundColor: '#ccc',
@@ -167,6 +162,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
-})
+});
 
 export default Chat;
