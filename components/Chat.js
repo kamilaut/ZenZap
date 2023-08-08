@@ -5,9 +5,8 @@ import { collection, query, orderBy, onSnapshot, addDoc } from "firebase/firesto
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomActions from './CustomActions';
 import MapView from 'react-native-maps';
-import { storage } from "firebase/storage";
 
-const Chat = ({ isConnected, route, db, navigation }) => {
+const Chat = ({ isConnected, route, db, navigation, storage }) => {
   const { userName, backgroundColor, userID } = route.params;
   // State to manage messages
   const [messages, setMessages] = useState([]);
