@@ -51,4 +51,5 @@ In the Firebase console, set appropriate read/write rules for your database. For
 With Expo Go or the emulator running, you can now use ZenZap on your device. Enter your name and choose a background color to start chatting with others. The app will store and display messages in real-time using Firebase Realtime Database.
   
   
-#### [Live Demo Link](https://github.com/kamilaut/ZenZap/blob/master/submission/IMG_0436.MP4) 
+#### Live Demo Link
+[Live Demo Link](https://github.com/kamilaut/ZenZap/blob/master/submission/IMG_0436.MP4) 
