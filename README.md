@@ -52,4 +52,4 @@ With Expo Go or the emulator running, you can now use ZenZap on your device. Ent
   
   
 #### Live Demo Link
-[Live Demo Link](https://github.com/kamilaut/ZenZap/blob/master/submission/IMG_0436.MP4) 
+[Live Demo Link](https://drive.google.com/file/d/1-odfC4BrVJF7Oczqrgp865u_lDSLLKWv/view?usp=sharing) 
